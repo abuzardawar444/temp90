@@ -1,5 +1,6 @@
-import db from '@/utils/db';
-import { redirect } from 'next/navigation';
+"use server";
+import db from "@/utils/db";
+import { redirect } from "next/navigation";
 
 export const fetchFeaturedProducts = async () => {
   const products = await db.product.findMany({
@@ -11,13 +12,13 @@ export const fetchFeaturedProducts = async () => {
 };
 
 // gleichwertig, aber der Ansatz von fetchFeaturedProducts gefällt mir besser ...
-export const fetchAllProducts = ({ search = '' }: { search: string }) => {
+export const fetchAllProducts = ({ search = "" }: { search: string }) => {
   return db.product.findMany({
     where: {
       OR: [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { company: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+        { company: { contains: search, mode: "insensitive" } },
       ],
     },
   });
@@ -30,6 +31,6 @@ export const fetchSingleProduct = async (productId: string) => {
       id: productId,
     },
   });
-  if (!product) redirect('/products');
+  if (!product) redirect("/products");
   return product;
 };
